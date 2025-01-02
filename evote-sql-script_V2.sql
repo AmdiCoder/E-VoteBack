@@ -13,7 +13,7 @@ CREATE TABLE utilisateur (
     role VARCHAR(20) NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
     date_creation DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB;
 
 -- Table Electeur
 CREATE TABLE electeur (
@@ -22,7 +22,7 @@ CREATE TABLE electeur (
     departement VARCHAR(100) NOT NULL,
     a_vote BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (id_electeur) REFERENCES utilisateur(id_utilisateur)
-);
+) ENGINE=InnoDB;
 
 -- Table Candidat
 CREATE TABLE candidat (
@@ -31,14 +31,14 @@ CREATE TABLE candidat (
     programme TEXT,
     biographie TEXT,
     FOREIGN KEY (id_candidat) REFERENCES utilisateur(id_utilisateur)
-);
+)ENGINE=InnoDB;
 
 -- Table Administrateur
 CREATE TABLE administrateur (
     id_admin INT PRIMARY KEY,
     matricule VARCHAR(50) UNIQUE NOT NULL,
     FOREIGN KEY (id_admin) REFERENCES utilisateur(id_utilisateur)
-);
+) ENGINE=InnoDB;
 
 -- Table Election
 CREATE TABLE election (
@@ -49,7 +49,7 @@ CREATE TABLE election (
     est_active BOOLEAN DEFAULT TRUE,
     created_by INT,
     FOREIGN KEY (created_by) REFERENCES administrateur(id_admin)
-);
+) ENGINE=InnoDB;
 
 -- Table Vote (classe d'association)
 CREATE TABLE vote (
@@ -63,7 +63,7 @@ CREATE TABLE vote (
     FOREIGN KEY (id_election) REFERENCES election(id_election),
     FOREIGN KEY (id_electeur) REFERENCES electeur(id_electeur),
     FOREIGN KEY (id_candidat) REFERENCES candidat(id_candidat)
-);
+) ENGINE=InnoDB;
 
 -- Table de liaison Election-Candidat
 CREATE TABLE election_candidat (
@@ -73,7 +73,7 @@ CREATE TABLE election_candidat (
     PRIMARY KEY (id_election, id_candidat),
     FOREIGN KEY (id_election) REFERENCES election(id_election),
     FOREIGN KEY (id_candidat) REFERENCES candidat(id_candidat)
-);
+) ENGINE=InnoDB;
 
 -- Création des index
 CREATE INDEX idx_user_numero_carte ON utilisateur(numero_carte);

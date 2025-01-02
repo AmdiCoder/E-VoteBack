@@ -1,0 +1,57 @@
+-- Utilisation de la base de données
+USE evote_db;
+
+--1  Insertion de données invalide
+--insertion dans la table electeur
+INSERT INTO electeur (id_electeur, region, departement, a_vote)
+VALUES 
+(1, 'Dakar', 'Guédiawaye', FALSE);
+
+
+--  Insertion de données valide
+-- Insertion de données dans la table utilisateur
+INSERT INTO utilisateur (prenom, nom, date_naissance, numero_carte, telephone, role, mot_de_passe) 
+VALUES 
+('Mustapha', 'Diop', '2000-01-15', 'NC001234', '771234567', 'electeur', 'motdepasse1'),
+('Ismaila', 'Ngom', '2002-03-10', 'NC001235', '771234568', 'candidat', 'motdepasse2'),
+('Yahya', 'Faye', '1992-07-20', 'NC001236', '771234569', 'administrateur', 'motdepasse3');
+
+-- Insertion dans la table electeur 
+INSERT INTO electeur (id_electeur, region, departement, a_vote)
+VALUES 
+(1, 'Dakar', 'Guédiawaye', FALSE),
+(1, 'Thiès', 'Tivaouane', FALSE);
+
+-- Insertion dans la table candidat 
+INSERT INTO candidat (id_candidat, parti, programme, biographie)
+VALUES 
+(2, 'Parti', 'progamme', 'biographie');
+
+-- Insertion dans la table administrateur (administrateur sénégalais)
+INSERT INTO administrateur (id_admin, matricule)
+VALUES 
+(3, 'ADM2025-001');
+
+-- Insertion dans la table election (élection au Sénégal)
+INSERT INTO election (date_debut, date_fin, type, est_active, created_by)
+VALUES 
+('2025-01-15 08:00:00', '2025-01-15 18:00:00', 'Présidentielle', TRUE, 3);
+
+-- Insertion dans la table election_candidat (association du candidat à l'élection)
+INSERT INTO election_candidat (id_election, id_candidat)
+VALUES 
+(1, 2);
+
+-- Insertion dans la table vote (vote pour un candidat dans une région sénégalaise)
+INSERT INTO vote (id_election, id_electeur, id_candidat, est_valide, est_anonyme)
+VALUES 
+(1, 1, 2, TRUE, TRUE);
+
+-- Vérification des données insérées
+SELECT * FROM utilisateur;
+SELECT * FROM electeur;
+SELECT * FROM candidat;
+SELECT * FROM administrateur;
+SELECT * FROM election;
+SELECT * FROM election_candidat;
+SELECT * FROM vote;

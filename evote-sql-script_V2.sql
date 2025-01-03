@@ -11,6 +11,7 @@ CREATE TABLE utilisateur (
     numero_carte VARCHAR(50) UNIQUE NOT NULL,
     telephone VARCHAR(20) NOT NULL,
     role VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
     date_creation DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;

@@ -17,7 +17,8 @@ import java.time.LocalDate;
 }, uniqueConstraints = {
         @UniqueConstraint(name = "numero_carte", columnNames = {"numero_carte"})
 })
-public class Utilisateur {
+public class
+Utilisateur {
     @Id
     @Column(name = "id_utilisateur", nullable = false)
     private Integer id;
@@ -39,6 +40,9 @@ public class Utilisateur {
 
     @Column(name = "role", nullable = false, length = 20)
     private String role;
+
+    @Column(name = "email",nullable = false)
+    private String email;
 
     @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;

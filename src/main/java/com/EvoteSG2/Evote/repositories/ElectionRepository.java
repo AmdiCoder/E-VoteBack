@@ -8,5 +8,5 @@ import java.time.Instant;
 import java.util.List;
 
 @Repository
-public interface ElectionRepository extends JpaRepository<Election, Integer> {
+public interface ElectionRepository extends JpaRepository<Election, Long> {
     }

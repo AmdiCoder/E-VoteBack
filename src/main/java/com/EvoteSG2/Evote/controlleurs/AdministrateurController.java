@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/administrateurs")
+@RequestMapping("/api/admin")
 public class AdministrateurController {
 
     private final AdministrateurService administrateurService;
@@ -18,19 +18,19 @@ public class AdministrateurController {
     public AdministrateurController(AdministrateurService administrateurService) {
         this.administrateurService = administrateurService;
     }
-
+    //Recuperer La liste des administrateurs
     @GetMapping
     public ResponseEntity<List<Administrateur>> getAllAdministrateurs() {
         List<Administrateur> administrateurs = administrateurService.getAllAdministrateurs();
         return ResponseEntity.ok(administrateurs);
     }
-
+    //Recuperer un administrateur par son identifiant
     @GetMapping("/{id}")
     public ResponseEntity<Administrateur> getAdministrateurById(@PathVariable Integer id) {
         Administrateur administrateur = administrateurService.getAdministrateurById(id);
         return ResponseEntity.ok(administrateur);
     }
-
+    //Ajouter un administrateur
     @PostMapping
     public ResponseEntity<Administrateur> createAdministrateur(@RequestBody Administrateur administrateur) {
         Administrateur newAdministrateur = administrateurService.createAdministrateur(administrateur);
@@ -39,7 +39,7 @@ public class AdministrateurController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Administrateur> updateAdministrateur(@PathVariable Integer id, @RequestBody Administrateur administrateur) {
-        Administrateur updatedAdministrateur = administrateurService.updateAdministrateur(administrateur);
+        Administrateur updatedAdministrateur = administrateurService.updateAdministrateur(id,administrateur);
         return ResponseEntity.ok(updatedAdministrateur);
     }
 

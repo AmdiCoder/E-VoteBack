@@ -1,66 +1,67 @@
 package com.EvoteSG2.Evote.controlleurs;
 
-import com.EvoteSG2.Evote.entities.ElectionCandidat;
-import com.EvoteSG2.Evote.entities.ElectionCandidatId;
+import com.EvoteSG2.Evote.entities.*;
+import com.EvoteSG2.Evote.repositories.CandidatRepository;
+import com.EvoteSG2.Evote.repositories.ElectionCandidatRepository;
+import com.EvoteSG2.Evote.repositories.ElectionRepository;
 import com.EvoteSG2.Evote.services.ElectionCandidatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/election-candidats")
+@RequestMapping("/api/ec")
 public class ElectionCandidatController {
 
-    private final ElectionCandidatService electionCandidatService;
+    @Autowired
+    private ElectionCandidatService electionCandidatService;
+
 
     @Autowired
-    public ElectionCandidatController(ElectionCandidatService electionCandidatService) {
-        this.electionCandidatService = electionCandidatService;
-    }
+    private ElectionRepository electionRepository;
+
+    @Autowired
+    private CandidatRepository candidatRepository;
 
     @GetMapping
-    public ResponseEntity<List<ElectionCandidat>> getAllElectionCandidats() {
-        List<ElectionCandidat> electionCandidats = electionCandidatService.getAllElectionCandidats();
+    public ResponseEntity<List<ElectionCandidat>> getAllElectionCandidat() {
+        List<ElectionCandidat> electionCandidats = electionCandidatService.getAllElectionCandidat();
         return ResponseEntity.ok(electionCandidats);
-    }
-
-    @GetMapping("/{idElection}/{idCandidat}")
-    public ResponseEntity<ElectionCandidat> getElectionCandidatById(@PathVariable Integer idElection, @PathVariable Integer idCandidat) {
-        ElectionCandidatId id = new ElectionCandidatId(idElection, idCandidat);
-        ElectionCandidat electionCandidat = electionCandidatService.getElectionCandidatById(id);
-        return ResponseEntity.ok(electionCandidat);
     }
 
     @PostMapping
-    public ResponseEntity<ElectionCandidat> createElectionCandidat(@RequestBody ElectionCandidat electionCandidat) {
-        ElectionCandidat newElectionCandidat = electionCandidatService.createElectionCandidat(electionCandidat);
-        return ResponseEntity.ok(newElectionCandidat);
+    public ResponseEntity<ElectionCandidat> createElectionCandidat(
+            @RequestParam Long idElection,
+            @RequestParam Long idUtilisateur) {
+
+        // Récupération des entités Election et Candidat depuis la base de données
+        Election election = electionRepository.findById(idElection)
+                .orElseThrow(() -> new IllegalArgumentException("Election not found with id: " + idElection));
+
+        Candidat candidat = candidatRepository.findById(Math.toIntExact(idUtilisateur))
+                .orElseThrow(() -> new IllegalArgumentException("Candidat not found with id: " + idUtilisateur));
+
+        // Appel de la méthode du service pour créer l'ElectionCandidat
+        ElectionCandidat electionCandidat = electionCandidatService.createElectionCandidat(election.getIdElection(), candidat.getIdUtilisateur());
+
+        return ResponseEntity.ok(electionCandidat);
     }
 
-    @PutMapping("/{idElection}/{idCandidat}")
-    public ResponseEntity<ElectionCandidat> updateElectionCandidat(@PathVariable Integer idElection, @PathVariable Integer idCandidat, @RequestBody ElectionCandidat electionCandidat) {
-        ElectionCandidat updatedElectionCandidat = electionCandidatService.updateElectionCandidat(electionCandidat);
-        return ResponseEntity.ok(updatedElectionCandidat);
-    }
+    @DeleteMapping
+    public ResponseEntity<String> deleteElectionCandidat(
+            @RequestParam Long idElection,
+            @RequestParam Long idUtilisateur) {
 
-    @DeleteMapping("/{idElection}/{idCandidat}")
-    public ResponseEntity<Void> deleteElectionCandidat(@PathVariable Integer idElection, @PathVariable Integer idCandidat) {
-        ElectionCandidatId id = new ElectionCandidatId(idElection, idCandidat);
-        electionCandidatService.deleteElectionCandidat(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/election/{idElection}")
-    public ResponseEntity<List<ElectionCandidat>> findByElectionId(@PathVariable Integer idElection) {
-        List<ElectionCandidat> electionCandidats = electionCandidatService.findByElectionId(idElection);
-        return ResponseEntity.ok(electionCandidats);
-    }
-
-    @GetMapping("/candidat/{idCandidat}")
-    public ResponseEntity<List<ElectionCandidat>> findByCandidatId(@PathVariable Integer idCandidat) {
-        List<ElectionCandidat> electionCandidats = electionCandidatService.findByCandidatId(idCandidat);
-        return ResponseEntity.ok(electionCandidats);
+        try {
+            // Appel du service pour supprimer l'enregistrement
+            electionCandidatService.deleteElectionCandidat(idElection, idUtilisateur);
+            return ResponseEntity.ok("Supprimé");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

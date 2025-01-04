@@ -29,8 +29,25 @@ public class CandidatService {
         return candidatRepository.save(candidat);
     }
 
-    public Candidat updateCandidat(Candidat candidat) {
-        return candidatRepository.save(candidat);
+    // Méthode pour mettre à jour un candidat
+    public Candidat updateCandidat(Integer id, Candidat candidat) {
+        // Vérifie si le candidat existe dans la base de données
+        Candidat existingCandidat = candidatRepository.findById(id).orElse(null);
+
+        if (existingCandidat != null) {
+            // Met à jour les propriétés du candidat existant
+            existingCandidat.setPrenom(candidat.getPrenom());
+            existingCandidat.setNom(candidat.getNom());
+            existingCandidat.setParti(candidat.getParti());
+            existingCandidat.setProgramme(candidat.getProgramme());
+            existingCandidat.setBiographie(candidat.getBiographie());
+
+            // Sauvegarde le candidat mis à jour
+            return candidatRepository.save(existingCandidat);
+        }
+
+        // Si le candidat n'existe pas, retourne null
+        return null;
     }
 
     public void deleteCandidat(Integer id) {

@@ -10,5 +10,4 @@ import java.util.List;
 public interface ElecteurRepository extends JpaRepository<Electeur, Integer> {
     List<Electeur> findByRegion(String region);
     List<Electeur> findByDepartement(String departement);
-    List<Electeur> findByaVote(Boolean aVote);
 }

@@ -39,7 +39,7 @@ public class ElecteurController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Electeur> updateElecteur(@PathVariable Integer id, @RequestBody Electeur electeur) {
-        Electeur updatedElecteur = electeurService.updateElecteur(electeur);
+        Electeur updatedElecteur = electeurService.updateElecteur(id, electeur);
         return ResponseEntity.ok(updatedElecteur);
     }
 
@@ -58,12 +58,6 @@ public class ElecteurController {
     @GetMapping("/departement/{departement}")
     public ResponseEntity<List<Electeur>> findByDepartement(@PathVariable String departement) {
         List<Electeur> electeurs = electeurService.findByDepartement(departement);
-        return ResponseEntity.ok(electeurs);
-    }
-
-    @GetMapping("/a_vote/{aVote}")
-    public ResponseEntity<List<Electeur>> findByAVote(@PathVariable Boolean aVote) {
-        List<Electeur> electeurs = electeurService.findByAVote(aVote);
         return ResponseEntity.ok(electeurs);
     }
 }

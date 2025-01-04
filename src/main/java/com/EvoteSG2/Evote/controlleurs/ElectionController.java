@@ -31,6 +31,8 @@ public class ElectionController {
         return ResponseEntity.ok(election);
     }
 
+
+
     @PostMapping
     public ResponseEntity<Election> createElection(@RequestBody Election election) {
         Election newElection = electionService.createElection(election);
@@ -39,7 +41,7 @@ public class ElectionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Election> updateElection(@PathVariable Integer id, @RequestBody Election election) {
-        Election updatedElection = electionService.updateElection(election);
+        Election updatedElection = electionService.updateElection(id,election);
         return ResponseEntity.ok(updatedElection);
     }
 

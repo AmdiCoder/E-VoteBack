@@ -1,6 +1,7 @@
 package com.EvoteSG2.Evote.services;
 
 import com.EvoteSG2.Evote.entities.Electeur;
+import com.EvoteSG2.Evote.entities.Electeur;
 import com.EvoteSG2.Evote.repositories.ElecteurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,23 @@ public class ElecteurService {
         return electeurRepository.save(electeur);
     }
 
-    public Electeur updateElecteur(Electeur electeur) {
-        return electeurRepository.save(electeur);
+    // Méthode pour mettre à jour un electeur
+    public Electeur updateElecteur(Integer id, Electeur electeur) {
+        // Vérifie si l'electeur existe dans la base de données
+        Electeur existingelecteur = electeurRepository.findById(id).orElse(null);
+
+        if (existingelecteur != null) {
+            // Met à jour les propriétés du electeur existant
+            existingelecteur.setPrenom(electeur.getPrenom());
+            existingelecteur.setNom(electeur.getNom());
+            existingelecteur.setRegion(electeur.getRegion());
+            existingelecteur.setDepartement(electeur.getDepartement());
+            // Sauvegarde l'electeur mis à jour
+            return electeurRepository.save(existingelecteur);
+        }
+
+        // Si l'electeur n'existe pas, retourne null (ou lance une exception)
+        return null;
     }
 
     public void deleteElecteur(Integer id) {
@@ -43,9 +59,5 @@ public class ElecteurService {
 
     public List<Electeur> findByDepartement(String departement) {
         return electeurRepository.findByDepartement(departement);
-    }
-
-    public List<Electeur> findByAVote(Boolean aVote) {
-        return electeurRepository.findByaVote(aVote);
     }
 }

@@ -3,6 +3,7 @@ package com.EvoteSG2.Evote.controlleurs;
 import com.EvoteSG2.Evote.entities.Candidat;
 import com.EvoteSG2.Evote.services.CandidatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,14 +33,19 @@ public class CandidatController {
     }
 
     @PostMapping
-    public ResponseEntity<Candidat> createCandidat(@RequestBody Candidat candidat) {
-        Candidat newCandidat = candidatService.createCandidat(candidat);
-        return ResponseEntity.ok(newCandidat);
+    public ResponseEntity<Object> createCandidat(@RequestBody Candidat candidat) {
+        try {
+            Candidat newCandidat = candidatService.createCandidat(candidat);
+            return new ResponseEntity<>(newCandidat, HttpStatus.CREATED);
+        } catch (Exception e) {
+
+            return new ResponseEntity<>("Erreur de creation du candidat : " +e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Candidat> updateCandidat(@PathVariable Integer id, @RequestBody Candidat candidat) {
-        Candidat updatedCandidat = candidatService.updateCandidat(candidat);
+        Candidat updatedCandidat = candidatService.updateCandidat(id, candidat);
         return ResponseEntity.ok(updatedCandidat);
     }
 

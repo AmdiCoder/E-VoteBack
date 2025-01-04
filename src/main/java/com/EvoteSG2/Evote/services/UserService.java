@@ -25,15 +25,8 @@ public class UserService {
     return utilisateurRepository.save(user);
   }
 
-  public Utilisateur updateUser(Integer id, Utilisateur user) {
-    Utilisateur existingUser = getUserById(id);
-    if (existingUser!= null) {
-      existingUser.setNom(user.getNom());
-      existingUser.setPrenom(user.getPrenom());
-      return utilisateurRepository.save(existingUser);
-    } else {
-      return null;
-    }
+  public Utilisateur updateUser(Utilisateur utilisateur) {
+    return utilisateurRepository.save(utilisateur);
   }
 
   public void deleteUser(Integer id) {

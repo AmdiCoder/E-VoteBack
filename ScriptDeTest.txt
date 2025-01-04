@@ -1,8 +1,8 @@
 -- Utilisation de la base de données
 USE evote_db;
 
---1  Insertion de données invalide
---insertion dans la table electeur
+-- 1  Insertion de données invalide
+-- insertion dans la table electeur
 INSERT INTO electeur (id_electeur, region, departement, a_vote)
 VALUES 
 (1, 'Dakar', 'Guédiawaye', FALSE);
@@ -12,9 +12,9 @@ VALUES
 -- Insertion de données dans la table utilisateur
 INSERT INTO utilisateur (prenom, nom, date_naissance, numero_carte, telephone, role, mot_de_passe) 
 VALUES 
-('Mustapha', 'Diop', '2000-01-15', 'NC001234', '771234567', 'electeur', 'motdepasse1'),
-('Ismaila', 'Ngom', '2002-03-10', 'NC001235', '771234568', 'candidat', 'motdepasse2'),
-('Yahya', 'Faye', '1992-07-20', 'NC001236', '771234569', 'administrateur', 'motdepasse3');
+('Mustapha', 'Diop', '2000-01-15', 'NC001234', '771234567', 'electeur','mustaphadiop@gmail.com', 'motdepasse1'),
+('Ismaila', 'Ngom', '2002-03-10', 'NC001235', '771234568', 'candidat','ismaliangom@gmail.com', 'motdepasse2'),
+('Yahya', 'Faye', '1992-07-20', 'NC001236', '771234569', 'administrateur','yahyafaye@gmail.com', 'motdepasse3');
 
 -- Insertion dans la table electeur 
 INSERT INTO electeur (id_electeur, region, departement, a_vote)

@@ -3,34 +3,40 @@ package com.EvoteSG2.Evote.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import org.apache.tomcat.util.json.JSONParser;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "vote")
 @Getter
 @Setter
-@Entity
-@Table(name = "vote", schema = "evote_db", indexes = {
-        @Index(name = "id_electeur", columnList = "id_electeur"),
-        @Index(name = "id_candidat", columnList = "id_candidat")
-})
 public class Vote {
-    @EmbeddedId
-    private VoteId id;
 
-    @Column(name = "id_candidat")
-    private Integer idCandidat;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_vote")
+    private long idVote;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "heure_vote")
-    private Instant heureVote;
+    @ManyToOne
+    @JoinColumn(name = "id_election", referencedColumnName = "id_election")
+    private Election election;
 
-    @ColumnDefault("1")
-    @Column(name = "est_valide")
-    private Boolean estValide;
+    @ManyToOne
+    @JoinColumn(name = "id_electeur", referencedColumnName = "id_electeur")
+    private Electeur electeur;
 
-    @ColumnDefault("1")
-    @Column(name = "est_anonyme")
-    private Boolean estAnonyme;
+    @ManyToOne
+    @JoinColumn(name = "id_candidat", referencedColumnName = "id_candidat")
+    private Candidat candidat;
+
+    @Column(name = "heure_vote", nullable = false)
+    private LocalDateTime heureVote = LocalDateTime.now();
+
+    @Column(name = "est_valide", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean estValide = true;
+
+    @Column(name = "est_anonyme", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean estAnonyme = true;
 
 }

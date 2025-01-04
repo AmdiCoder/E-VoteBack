@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CandidatRepository extends JpaRepository<Candidat, Integer> {
     List<Candidat> findByParti(String parti);
+
 }

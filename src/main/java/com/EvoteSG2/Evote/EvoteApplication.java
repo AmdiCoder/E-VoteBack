@@ -10,4 +10,6 @@ public class EvoteApplication {
 		SpringApplication.run(EvoteApplication.class, args);
 	}
 
+	
+
 }
